@@ -8,39 +8,67 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public class ColonySim extends ApplicationAdapter
 {
-	private OrthoCachedTiledMapRenderer mapRenderer;
-	private SpriteBatch renderer;
+	private OrthogonalTiledMapRenderer mapRenderer;
+	private SpriteBatch spriteRenderer;
 	private TiledMap tiledMap;
 	private OrthographicCamera camera;
+	private Colonist colonist;
+
+	private long prev_time;
+	private long curr_time;
 
 	@Override
 	public void create()
 	{
-		renderer = new SpriteBatch();
+		spriteRenderer = new SpriteBatch();
 
 		tiledMap = new TmxMapLoader().load("maps/map.tmx");
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false, (float) Gdx.graphics.getWidth(), (float) Gdx.graphics.getHeight());
 
-		mapRenderer = new OrthoCachedTiledMapRenderer(tiledMap);
+		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+		mapRenderer.getBatch().enableBlending();
 		mapRenderer.setView(camera);
-		mapRenderer.setBlending(true);
+
+		colonist = new Colonist(tiledMap, spriteRenderer);
+
+		prev_time = curr_time = System.currentTimeMillis();
 	}
 
 	@Override
 	public void render()
 	{
-		update();
+		prev_time = curr_time;
+		curr_time = System.currentTimeMillis();
+
+		update(curr_time - prev_time);
 		draw();
 	}
 
-	private void update()
+	private void update(long delta)
+	{
+		handle_inputs();
+
+		colonist.update(delta);
+	}
+
+	private void draw()
+	{
+		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		mapRenderer.render();
+
+		colonist.draw();
+	}
+
+	private void handle_inputs()
 	{
 		Vector2 transform = new Vector2(0, 0);
 
@@ -53,24 +81,20 @@ public class ColonySim extends ApplicationAdapter
 		if (Gdx.app.getInput().isKeyPressed(Input.Keys.RIGHT))
 			transform.add(5, 0);
 
-		camera.translate(transform);
-		camera.update();
-		mapRenderer.setView(camera);
-	}
-
-	private void draw()
-	{
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		mapRenderer.render();
+		if (!transform.isZero())
+		{
+			camera.translate(transform);
+			camera.update();
+			mapRenderer.setView(camera);
+		}
 	}
 
 	@Override
 	public void dispose()
 	{
 		tiledMap.dispose();
-		renderer.dispose();
+		spriteRenderer.dispose();
 		mapRenderer.dispose();
+		colonist.dispose();
 	}
 }
