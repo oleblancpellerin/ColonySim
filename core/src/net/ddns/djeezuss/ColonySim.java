@@ -36,9 +36,14 @@ public class ColonySim extends ApplicationAdapter
 		mapRenderer.getBatch().enableBlending();
 		mapRenderer.setView(camera);
 
-		colonist = new Colonist(tiledMap, spriteRenderer);
+		Colonist.renderer = spriteRenderer;
+		Colonist.tiledMap = tiledMap;
+		colonist = new Colonist();
+
 
 		prev_time = curr_time = System.currentTimeMillis();
+
+		//World
 	}
 
 	@Override
@@ -60,12 +65,17 @@ public class ColonySim extends ApplicationAdapter
 
 	private void draw()
 	{
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		mapRenderer.render();
 
+		spriteRenderer.setProjectionMatrix(camera.combined);
+		spriteRenderer.begin();
+
 		colonist.draw();
+
+		spriteRenderer.end();
 	}
 
 	private void handle_inputs()
@@ -80,6 +90,8 @@ public class ColonySim extends ApplicationAdapter
 			transform.add(-5, 0);
 		if (Gdx.app.getInput().isKeyPressed(Input.Keys.RIGHT))
 			transform.add(5, 0);
+		if (Gdx.app.getInput().isKeyPressed(Input.Keys.ESCAPE))
+			Gdx.app.exit();
 
 		if (!transform.isZero())
 		{
@@ -92,6 +104,8 @@ public class ColonySim extends ApplicationAdapter
 	@Override
 	public void dispose()
 	{
+		super.dispose();
+
 		tiledMap.dispose();
 		spriteRenderer.dispose();
 		mapRenderer.dispose();
