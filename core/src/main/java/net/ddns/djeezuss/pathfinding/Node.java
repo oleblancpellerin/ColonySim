@@ -1,8 +1,8 @@
 package net.ddns.djeezuss.pathfinding;
 
-class Node
+public class Node
 {
-	int x, y;
+	public int x, y;
 	double hValue;
 	int gValue;
 	double fValue;

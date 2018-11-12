@@ -14,12 +14,11 @@ import java.awt.*;
 @SuppressWarnings("WeakerAccess")
 public class Colonist
 {
-	public static TiledMap tiledMap;
 	public static SpriteBatch renderer;
 	public static Texture maleNPCTexture;
 	public static int nbColonists = 0;
 	
-	private final boolean[][] collisionLayer;
+	static boolean[][] collisionLayer;
 	private final int layerWidth;
 	private final int layerHeight;
 	
@@ -38,13 +37,12 @@ public class Colonist
 	private long move_target_time = 0;
 	private long move_anim_target_time = 0;
 	
-	public Colonist()
+	public Colonist(int width, int height)
 	{
 		nbColonists++;
-		TiledMapTileLayer tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get("Collision");
-		collisionLayer = TiledLayerAdapter.getBooleanMatrix(tileLayer);
-		layerWidth = tileLayer.getWidth();
-		layerHeight = tileLayer.getHeight();
+
+		layerWidth = width;
+		layerHeight = height;
 		
 		//location = new Point(MathUtils.random(collisionLayer.getWidth()), MathUtils.random(collisionLayer.getHeight()));
 		location = new Point();
@@ -54,21 +52,21 @@ public class Colonist
 			location.y = MathUtils.random(layerHeight - 1);
 		}
 
-		/*
+
 		{//// TEMP ////
 			int i = 0;
 			path = new Point[2];
 			path[i++] = new Point(location.x + 4, location.y - 4);
 			path[i] = new Point(location.x, location.y);
 		}//// TEMP ////
-		*/
+
 		
 		//PathFindingAStar.generateHValue(collisionLayer, location.x, location.y, );
 		
 		if (maleNPCTexture == null) maleNPCTexture = new Texture("spritesheets/male_villager.png");
 		sprite = new TextureRegion(maleNPCTexture, 0, 0, 16, 16);
 		
-		Gdx.app.log(getClass().getName(), "x: " + location.x + "\ty: " + location.y);
+		Gdx.app.debug(getClass().getName(), "x: " + location.x + "\ty: " + location.y);
 	}
 	
 	public void update(long delta)
