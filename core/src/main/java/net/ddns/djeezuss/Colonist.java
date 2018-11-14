@@ -21,8 +21,7 @@ public class Colonist
 	static boolean[][] collisionLayer;
 	private final int layerWidth;
 	private final int layerHeight;
-	
-	private Point path[];
+
 	private TextureRegion sprite;
 	
 	private int direction = 0;
@@ -51,15 +50,6 @@ public class Colonist
 			location.x = MathUtils.random(layerWidth - 1);
 			location.y = MathUtils.random(layerHeight - 1);
 		}
-
-
-		{//// TEMP ////
-			int i = 0;
-			path = new Point[2];
-			path[i++] = new Point(location.x + 4, location.y - 4);
-			path[i] = new Point(location.x, location.y);
-		}//// TEMP ////
-
 		
 		//PathFindingAStar.generateHValue(collisionLayer, location.x, location.y, );
 		
@@ -72,13 +62,6 @@ public class Colonist
 	public void update(long delta)
 	{
 		accumulated_time += delta;
-		
-		// Movement TIME !!!
-		if (moveTo(path[state]))
-		{
-			if (++state >= path.length) state = 0;
-			anim_step = 0;
-		}
 		
 		if (anim_target_time < accumulated_time)
 		{
@@ -143,10 +126,5 @@ public class Colonist
 	{
 		if (--nbColonists == 0)
 			maleNPCTexture.dispose();
-	}
-	
-	public void setPath(Point[] path)
-	{
-		this.path = path;
 	}
 }

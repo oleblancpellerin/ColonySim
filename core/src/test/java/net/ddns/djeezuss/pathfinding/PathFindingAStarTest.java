@@ -26,7 +26,7 @@ class PathFindingAStarTest
 			};
 
 			Stack<Node> path = PathFindingAStar.AStar(matrix, 1, 0, 4, 3);
-			assertEquals(10, path.size());
+			assertEquals(11, path.size());
 
 		} catch (PathNotFoundException e)
 		{

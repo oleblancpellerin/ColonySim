@@ -13,7 +13,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import net.ddns.djeezuss.pathfinding.PathFindingAStar;
 import net.ddns.djeezuss.pathfinding.TiledLayerAdapter;
 
 public class ColonySim extends ApplicationAdapter
@@ -40,20 +39,6 @@ public class ColonySim extends ApplicationAdapter
 		TiledMapTileLayer tiledLayer = ((TiledMapTileLayer) tiledMap.getLayers().get("Collision"));
 
 		matrix = TiledLayerAdapter.getBooleanMatrix(tiledLayer);
-
-		/*StringBuilder stringBuilder = new StringBuilder().append("\n");
-		for (int i = ((TiledMapTileLayer) tiledMap.getLayers().get("Collision")).getHeight() - 1; i >= 0; i--)
-		{
-			stringBuilder.append("[");
-			for (int j = 0; j < ((TiledMapTileLayer) tiledMap.getLayers().get("Collision")).getWidth(); j++)
-			{
-				stringBuilder.append((matrix[j][i]) ? "." : 0).append(" ");
-			}
-			stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-			stringBuilder.append("]\n");
-		}
-		Gdx.app.debug(getClass().getName(), stringBuilder.toString());*/
-		//PathFindingAStar.generateHValue(matrix, 22, 42, 37, 54, tiledLayer.getWidth(), tiledLayer.getHeight(), 5);
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, (float) Gdx.graphics.getWidth(), (float) Gdx.graphics.getHeight());

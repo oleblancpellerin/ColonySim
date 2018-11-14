@@ -20,17 +20,17 @@ public class PathFindingAStar
 		closedList.clear();
 
 		// Generate values
-		for (int i = 0; i < cells.length; i++)
+		for (int cellY = 0; cellY < cells.length; cellY++)
 		{
-			for (int j = 0; j < cells[0].length; j++)
+			for (int cellX = 0; cellX < cells[0].length; cellX++)
 			{
-				cells[i][j] = new Node(j, i);
-				cells[i][j].fValue = 0;
-				cells[i][j].gValue = Integer.MAX_VALUE;
-				if (matrix[j][i])
-					cells[i][j].hValue = 10 * (Math.abs(startX - destX) + Math.abs(startY - destY));
+				cells[cellY][cellX] = new Node(cellX, cellY);
+				cells[cellY][cellX].fValue = 0;
+				cells[cellY][cellX].gValue = Integer.MAX_VALUE;
+				if (matrix[cellY][cellX])
+					cells[cellY][cellX].hValue = 10 * (Math.abs(startX - destX) + Math.abs(startY - destY));
 				else
-					cells[i][j].hValue = -1;
+					cells[cellY][cellX].hValue = -1;
 			}
 		}
 
@@ -68,7 +68,7 @@ public class PathFindingAStar
 				checkNeighbour(openList, closedList, cells[node.y - 1][node.x], node, 10);
 
 			// Right
-			if (node.x + 1 < cells.length)
+			if (node.x + 1 < cells[0].length)
 				checkNeighbour(openList, closedList, cells[node.y][node.x + 1], node, 10);
 			// Left
 			if (node.x - 1 >= 0)
@@ -92,30 +92,6 @@ public class PathFindingAStar
 
 		node.parent = active_node;
 		node.gValue = gPrime;
-	}
-
-	public static void main(String[] args)
-	{
-		try
-		{
-			boolean[][] matrix = {
-					{true, true, false, true, true},
-					{true, true, false, true, true},
-					{true, true, false, true, true},
-					{true, false, false, true, true},
-					{true, true, true, true, true}
-			};
-
-			Stack<Node> path = PathFindingAStar.AStar(matrix, 1, 0, 4, 3);
-			while (!path.isEmpty())
-			{
-				Node node = path.pop();
-				System.out.println("(" + node.x + ", " + node.y + ")");
-			}
-
-		} catch (PathNotFoundException e)
-		{
-			System.out.println(e.getMessage());
-		}
+		node.fValue = node.gValue + node.hValue;
 	}
 }
