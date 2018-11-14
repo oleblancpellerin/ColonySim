@@ -2,7 +2,7 @@ package net.ddns.djeezuss.pathfinding;
 
 public class Node
 {
-	public int x, y;
+	int x, y;
 	double hValue;
 	int gValue;
 	double fValue;
