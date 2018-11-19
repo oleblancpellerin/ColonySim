@@ -2,27 +2,45 @@ package net.ddns.djeezuss.goap;
 
 import net.ddns.djeezuss.goap.actions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class GoapPlanner
 {
-	private boolean initPhaseDone = false;
-	
 	private HashMap<String, GoapAction> allActions;
-	
+	private boolean initPhaseDone = false;
+	private GoapNodeNetwork nodeNetwork;
+
+	//*
+	public static void main(String[] args)
+	{
+		GoapPlanner gp = new GoapPlanner();
+		gp.init();
+
+		Stack<GoapAction> stack = gp.actionsForGoal(gp.getAction("makeFireWood"));
+		GoapAction a;
+		while (!stack.empty())
+		{
+			a = stack.pop();
+			System.out.println(a + " : " + a.getCost());
+		}
+	}
+	//*/
+
 	public void init()
 	{
 		if (!initPhaseDone)
 		{
 			allActions = new HashMap<>();
-			
 			addActions();
-			
+
+			nodeNetwork = new GoapNodeNetwork(allActions);
+
 			initPhaseDone = true;
 		}
 	}
-	
+
 	private void addActions()
 	{
 		addAction(new CutWoodAction());
@@ -30,49 +48,56 @@ public class GoapPlanner
 		addAction(new GetToolAction("Axe"));
 		addAction(new MakeFireWoodAction());
 	}
-	
+
+	public GoapAction getAction(String name)
+	{
+		return allActions.get(name);
+	}
+
+	public Stack<GoapAction> actionsForGoal(GoapAction goal)
+	{
+		Stack<GoapAction> actionsToPerform = new Stack<>();
+
+		GoapActionNode node = nodeNetwork.getNodeFromName(goal.getActionName());
+		actionsToPerform.push(node.action);
+		while (!nodeNetwork.head.getChilds().contains(node))
+		{
+			ArrayList<GoapActionNode> parents = null;
+			if (node != null) parents = node.getParents();
+
+			node = null;
+			if (parents != null)
+			{
+				for (GoapActionNode n : parents)
+				{
+					if (node == null || node.action.getCost() > n.action.getCost())
+					{
+						node = n;
+					}
+				}
+			}
+
+			if (node != null) actionsToPerform.push(node.action);
+		}
+
+		return actionsToPerform;
+	}
+
 	private void addAction(GoapAction action)
 	{
 		if (!initPhaseDone)
 			allActions.put(action.getActionName(), action);
 	}
-	
-	public GoapAction getAction(String name)
+
+	private ArrayList<GoapAction> getActionFromPrerequisite(String prerequisite)
 	{
-		return allActions.get(name);
-	}
-	
-	private GoapAction actionsForGoal(GoapAction goal)
-	{
-		if (goal.getPrerequisites().size() == 0)
-		{
-			System.out.println(goal.toString());
-			return goal;
-		}
-		
+		ArrayList<GoapAction> actions = new ArrayList<>();
 		for (GoapAction action : allActions.values())
 		{
-			for (String pre : goal.getPrerequisites())
-			{
-				if (action.getEffects().contains(pre))
-				{
-					System.out.println(goal.toString());
-					return actionsForGoal(action);
-				} else if (action.getPrerequisites().size() == 0)
-				{
-					System.out.println(action.toString());
-					return action;
-				}
-			}
+			if (action.getEffect().contains(prerequisite))
+				actions.add(action);
 		}
-		
-		return null;
-	}
-	
-	public static void main(String[] args)
-	{
-		GoapPlanner goap = new GoapPlanner();
-		goap.init();
-		goap.actionsForGoal(goap.getAction("makeFireWood"));
+
+		return actions;
 	}
 }

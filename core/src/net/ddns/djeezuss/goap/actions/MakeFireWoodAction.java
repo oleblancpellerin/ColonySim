@@ -7,16 +7,16 @@ public class MakeFireWoodAction extends GoapAction
 	public MakeFireWoodAction()
 	{
 		super();
-		
+
 		actionName = "makeFireWood";
-		prerequisites.add("hasWood");
-		effects.add("hasFireWood");
+		prerequisite = "hasWood";
+		effect = "hasFireWood";
 		cost = 5;
 	}
-	
+
 	@Override
 	public void perform(Colonist colonist)
 	{
-	
+
 	}
 }

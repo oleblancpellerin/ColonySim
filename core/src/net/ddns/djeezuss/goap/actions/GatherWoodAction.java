@@ -10,7 +10,7 @@ public class GatherWoodAction extends GoapAction
 		
 		actionName = "gatherWood";
 		
-		effects.add("hasWood");
+		effect = "hasWood";
 		cost = 10;
 	}
 	
