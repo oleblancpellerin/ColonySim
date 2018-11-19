@@ -113,6 +113,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        compile 'org.apache.commons:commons-lang3:3.6'
 
         testImplementation('org.junit.jupiter:junit-jupiter-api:5.1.0')
         testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.1.0')
