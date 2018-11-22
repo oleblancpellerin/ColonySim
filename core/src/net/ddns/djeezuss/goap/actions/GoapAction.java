@@ -25,7 +25,8 @@ public abstract class GoapAction
 	public String getActionName() { return this.actionName; }
 	public int getCost() { return this.cost; }
 
-	public abstract void perform(Colonist colonist);
+	public abstract boolean perform(Colonist colonist);
+	public abstract boolean prerequisite();
 
 	@Override
 	public String toString()

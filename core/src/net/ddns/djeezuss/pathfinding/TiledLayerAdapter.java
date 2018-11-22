@@ -10,11 +10,11 @@ public class TiledLayerAdapter
 		final int height = layer.getHeight();
 		boolean[][] matrix = new boolean[width][height];
 		
-		for (int i = 0; i < width; i++)
+		for (int y = 0; y < width; y++)
 		{
-			for (int j = 0; j < height; j++)
+			for (int x = 0; x < height; x++)
 			{
-				matrix[i][j] = (layer.getCell(i, j) == null);
+				matrix[y][x] = (layer.getCell(x, y) == null);
 			}
 		}
 		

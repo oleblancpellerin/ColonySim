@@ -1,5 +1,6 @@
 package net.ddns.djeezuss.goap.actions;
 
+import com.badlogic.gdx.Gdx;
 import net.ddns.djeezuss.Colonist;
 
 public class GatherWoodAction extends GoapAction
@@ -15,8 +16,20 @@ public class GatherWoodAction extends GoapAction
 	}
 	
 	@Override
-	public void perform(Colonist colonist)
+	public boolean perform(Colonist colonist)
 	{
+		if(colonist.moveTo(33, 42))
+		{
+			Gdx.app.log("GatherWood", "done");
+			return true;
+		}
+		
+		return false;
+	}
 	
+	@Override
+	public boolean prerequisite()
+	{
+		return true;
 	}
 }

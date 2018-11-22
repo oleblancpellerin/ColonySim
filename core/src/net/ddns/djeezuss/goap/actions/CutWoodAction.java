@@ -1,5 +1,6 @@
 package net.ddns.djeezuss.goap.actions;
 
+import com.badlogic.gdx.Gdx;
 import net.ddns.djeezuss.Colonist;
 
 public class CutWoodAction extends GoapAction
@@ -15,8 +16,15 @@ public class CutWoodAction extends GoapAction
 	}
 
 	@Override
-	public void perform(Colonist colonist)
+	public boolean perform(Colonist colonist)
 	{
-
+		
+		return false;
+	}
+	
+	@Override
+	public boolean prerequisite()
+	{
+		return false;
 	}
 }

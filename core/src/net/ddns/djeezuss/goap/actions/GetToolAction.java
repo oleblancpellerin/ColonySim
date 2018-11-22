@@ -16,8 +16,14 @@ public class GetToolAction extends GoapAction
 	}
 
 	@Override
-	public void perform(Colonist colonist)
+	public boolean perform(Colonist colonist)
 	{
-
+		return false;
+	}
+	
+	@Override
+	public boolean prerequisite()
+	{
+		return false;
 	}
 }
