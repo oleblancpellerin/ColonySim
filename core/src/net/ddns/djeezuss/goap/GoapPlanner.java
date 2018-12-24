@@ -12,22 +12,6 @@ public class GoapPlanner
 	private boolean initPhaseDone = false;
 	private GoapNodeNetwork nodeNetwork;
 
-	//*
-	public static void main(String[] args)
-	{
-		GoapPlanner gp = new GoapPlanner();
-		gp.init();
-
-		Stack<GoapAction> stack = gp.actionsForGoal(gp.getAction("makeFireWood"));
-		GoapAction a;
-		while (!stack.empty())
-		{
-			a = stack.pop();
-			System.out.println(a + " : " + a.getCost());
-		}
-	}
-	//*/
-
 	public void init()
 	{
 		if (!initPhaseDone)

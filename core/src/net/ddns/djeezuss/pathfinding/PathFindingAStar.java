@@ -94,28 +94,4 @@ public class PathFindingAStar
 		node.gValue = gPrime;
 		node.fValue = node.gValue + node.hValue;
 	}
-	
-	public static void main(String[] args)
-	{
-		boolean[][] matrix = {
-				{true, true, false, true, true},
-				{true, true, false, true, true},
-				{true, true, false, true, true},
-				{true, false, false, true, true},
-				{true, true, true, true, true}
-		};
-		
-		try
-		{
-			Stack<Node> path = PathFindingAStar.AStar(matrix, 1, 0, 4, 3);
-			
-			while(!path.empty())
-			{
-				System.out.println(path.pop());
-			}
-		} catch (PathNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-	}
 }
